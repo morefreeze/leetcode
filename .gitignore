@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+
+# shell test file
+words.txt
+file.txt
