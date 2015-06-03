@@ -12,6 +12,7 @@
 # project, except GTEST_HEADERS, which you can use in your own targets
 # but shouldn't modify.
 
+APP = longest_palindromic_substring
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
 GTEST_DIR = gtest-1.7.0/
@@ -29,7 +30,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = median_two_array_unittest
+TESTS = $(APP)_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -71,12 +72,12 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-median_two_array.o : $(USER_DIR)/median_two_array.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/median_two_array.cpp
+$(APP).o : $(USER_DIR)/$(APP).cpp $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/$(APP).cpp
 
-median_two_array_unittest.o : $(USER_DIR)/median_two_array_unittest.cc \
+$(APP)_unittest.o : $(USER_DIR)/$(APP)_unittest.cc \
                      $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/median_two_array_unittest.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/$(APP)_unittest.cc
 
-median_two_array_unittest : median_two_array.o median_two_array_unittest.o gtest_main.a
+$(APP)_unittest : $(APP).o $(APP)_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
