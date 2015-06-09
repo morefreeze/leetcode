@@ -34,3 +34,5 @@ file.txt
 
 # unittest
 *unittest
+
+*.bak
