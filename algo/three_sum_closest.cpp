@@ -76,30 +76,21 @@ class Solution {
         static bool gt(int lhs, int rhs){ return rhs < lhs; };
     public:
         int threeSumClosest(vector<int>& nums, int target) {
-            cout << SZ(nums) << endl;
             sort(ALL(nums));
-            VI rnums(RALL(nums));
-            int ans(nums[0]+nums[SZ(nums)-1]+nums[SZ(nums)/2]);
-            //cout << "init " << ans << endl;
-            int t0(-999999), t2(999999);
-            REP(i, SZ(nums)){
-                for(int j = SZ(nums)-1; j > i+1;--j){
-                    //cout << "i j  " << i << " " << j << endl;
-                    t0 = nums[i];
-                    t2 = nums[j];
-                    int t1( target-nums[i]-nums[j] );
-                    VI::iterator low = lower_bound(nums.begin()+i+1, nums.begin()+j-1, t1);
-                    //cout << "dist " << low-nums.begin() << endl;
-                    if (abs(*low+t0+t2 - target) < abs(ans-target)){
-                        //cout << "low " << *low << endl;
-                        ans = *low+t0+t2;
+            int ans(nums[0]+nums[1]+nums[2]);
+            FOR(i, 1, SZ(nums)-1){
+                int low(0), upp(SZ(nums)-1);
+                while(low < i && upp > i){
+                    int t(nums[low]+nums[i]+nums[upp]);
+                    if (abs(t-target) < abs(ans-target)){
+                        ans = t;
                     }
-                    VI::iterator rlow = lower_bound(rnums.begin()+SZ(rnums)-j, rnums.begin()+SZ(rnums)-i-1-1, target, gt);
-                    if (abs(*rlow+t0+t2 - target) < abs(ans-target)){
-                        //cout << "rlow " << *rlow << endl;
-                        ans = *rlow+t0+t2;
+                    if (t > target){
+                        --upp;
                     }
-                    //cout << ans << endl;
+                    else{
+                        ++low;
+                    }
                 }
             }
             return ans;
