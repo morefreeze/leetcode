@@ -12,7 +12,7 @@
 # project, except GTEST_HEADERS, which you can use in your own targets
 # but shouldn't modify.
 
-APP = valid_parenthese
+APP = merge_sorted_list
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
 GTEST_DIR = gtest-1.7.0/
@@ -26,7 +26,7 @@ USER_DIR = .
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -Wextra
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -79,5 +79,8 @@ $(APP)_unittest.o : $(USER_DIR)/$(APP)_unittest.cc \
                      $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/$(APP)_unittest.cc
 
-$(APP)_unittest : $(APP).o $(APP)_unittest.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+list_helper.o : $(USER_DIR)/list_helper.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/list_helper.cc
+
+$(APP)_unittest : $(APP).o $(APP)_unittest.o list_helper.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
