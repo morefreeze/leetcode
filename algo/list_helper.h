@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdlib>
 #include <cstdio>
+#include <iostream>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ struct ListNode {
 
 vector<int> list2Vector(ListNode *head);
 ListNode* vector2List(const vector<int>& v);
+void dumpList(const ListNode *head);
 
 
 #endif /* end of include guard: LIST_HELPER_H */

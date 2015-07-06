@@ -24,3 +24,10 @@ ListNode* vector2List(const vector<int>& v){
     }
     return ans;
 }
+void dumpList(const ListNode *head){
+    while(head){
+        cout << head->val << " ";
+        head = head->next;
+    }
+    cout << "!" << endl;
+}
