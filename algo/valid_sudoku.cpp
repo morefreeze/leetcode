@@ -73,7 +73,55 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-
+        bool isValidSudoku(vector<vector<char> >& board) {
+            REP (i, 9){
+                int row(0);
+                REP (j, 9){
+                    char cur;
+                    cur = board[i][j];
+                    if (!('1' <= cur && cur <= '9')){
+                        continue;
+                    }
+                    if ((1<<(cur-'1')) & row){
+                        return false;
+                    }
+                    else{
+                        row |= 1 << (cur-'1');
+                    }
+                }
+                int col(0);
+                REP (j, 9){
+                    char cur;
+                    cur = board[j][i];
+                    if (!('1' <= cur && cur <= '9')){
+                        continue;
+                    }
+                    if ((1<<(cur-'1')) & col){
+                        return false;
+                    }
+                    else{
+                        col |= 1 << (cur-'1');
+                    }
+                }
+                int squ(0);
+                FOR (j, i/3*3, i/3*3+3){
+                    FOR (k, i%3*3, i%3*3+3){
+                        char cur;
+                        cur = board[j][k];
+                        if (!('1' <= cur && cur <= '9')){
+                            continue;
+                        }
+                        if ((1<<(cur-'1')) & squ){
+                            return false;
+                        }
+                        else{
+                            squ |= 1 << (cur-'1');
+                        }
+                    }
+                }
+            }
+            return true;
+        }
 };
 
 #endif /* end of include guard: VALID_SUDOKU_H */
