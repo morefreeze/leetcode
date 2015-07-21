@@ -75,3 +75,19 @@ TEST_F(SolveSudokuTest, Small){
     sol.solveSudoku(board);
     pr_board(board);
 }
+TEST_F(SolveSudokuTest, Crazy){
+    string bb[] = {".........",
+                   ".........",
+                   ".........",
+                   ".........",
+                   ".........",
+                   ".........",
+                   ".........",
+                   ".........",
+                   ".........",
+    };
+    vector <vector <char> > board;
+    make_board(bb, board);
+    sol.solveSudoku(board);
+    pr_board(board);
+}
