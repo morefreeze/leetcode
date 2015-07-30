@@ -102,11 +102,39 @@ class Solution {
             }
             return false;
         }
+        bool dp(){
+            int f[SZ(_s)+10][10];
+            memset(f, 0, sizeof(f));
+            f[0][0] = 1;
+            REP (j, SZ(_p)){
+                char card(_p[j]);
+                REP (i, SZ(_s)+1){
+                    f[i][(j+1)%2] = 0;
+                }
+                if (card == '*') f[0][(j+1)%2] = f[0][j%2];
+                REP (i, SZ(_s)){
+                    if (card == '?'){
+                        f[i+1][(j+1)%2] = f[i+1][(j+1)%2] || (f[i][j%2]);
+                    }
+                    else if (card == '*'){
+                        REP (k, i+2){
+                            f[i+1][(j+1)%2] = f[i+1][(j+1)%2] || f[k][j%2];
+                            if (f[i+1][(j+1)%2]) break;
+                        }
+                    }
+                    else{
+                        f[i+1][(j+1)%2] = f[i+1][(j+1)%2] || (f[i][j%2] && _s[i] == card);
+                    }
+                }
+            }
+            return f[SZ(_s)][SZ(_p)%2];
+        }
     public:
         bool isMatch(string s, string p) {
             _s = s;
             _p = p;
-            return dfs(0, 0);
+            return dp();
+            //return dfs(0, 0);
         }
 };
 
