@@ -1,6 +1,6 @@
-#ifndef TPL_SOL_H
+#ifndef ANAGRAMS_H
 
-#define TPL_SOL_H
+#define ANAGRAMS_H
 
 #include <vector>
 #include <list>
@@ -74,7 +74,29 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-
+        string make_sort(string &s){
+            string ans(s);
+            sort(ALL(ans));
+            return ans;
+        }
+        vector<string> anagrams(vector<string>& strs) {
+            vector<string> ans;
+            map<string, int> d;
+            bool vi[SZ(strs)+1];
+            CLR(vi);
+            REP (i, SZ(strs)){
+                string anag(make_sort(strs[i]));
+                if (d.find(anag) != d.end()){
+                    vi[i] = 1;
+                    vi[ d[anag] ] = 1;
+                }
+                d[anag] = i;
+            }
+            REP (i, SZ(strs)){
+                if (vi[i]) ans.PB(strs[i]);
+            }
+            return ans;
+        }
 };
 
-#endif /* end of include guard: TPL_SOL_H */
+#endif /* end of include guard: ANAGRAMS_H */
