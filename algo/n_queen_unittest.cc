@@ -19,8 +19,8 @@ TEST_F(NQueenTest, Small){
         ".Q..",
     };
     vector< vector<string> > ans;
-    ans.PB(vector<string>(z0, z0+ASZ(z0)));
-    ans.PB(vector<string>(z1, z1+ASZ(z1)));
+    ans.PB(vector<string>(ASZ(z0)));
+    ans.PB(vector<string>(ASZ(z1)));
     EXPECT_EQ(ans, sol.solveNQueens(4));
 }
 TEST_F(NQueenTest, Normal){

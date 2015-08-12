@@ -51,7 +51,7 @@ typedef long long LL;
 #define PB push_back
 #define MP make_pair
 #define SZ(a) int((a).size())
-#define ASZ(a) int(sizeof(a)/sizeof(a[0]))
+#define ASZ(a) (a),(a)+int(sizeof(a)/sizeof(a[0]))
 #define EACH(i,c) for(typeof((c).begin()) i=(c).begin(); i!=(c).end(); ++i)
 #define EXIST(s,e) ((s).find(e)!=(s).end())
 #define SORT(c) sort((c).begin(),(c).end())
