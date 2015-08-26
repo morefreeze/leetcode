@@ -11,7 +11,7 @@ ListNode* vector2List(const vector<int>& v){
     ListNode *ans(NULL);
     ListNode *cur(NULL);
     ListNode *tmp(NULL);
-    for (int i = 0;i < v.size();++i){
+    for (int i = 0;i < int(v.size());++i){
         tmp = new ListNode(v[i]);
         if (!ans){
             ans = tmp;

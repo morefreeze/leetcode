@@ -1,8 +1,7 @@
-#ifndef LCA_BT_H
+#ifndef MISSING_NUM_H
 
-#define LCA_BT_H
+#define MISSING_NUM_H
 
-#include "tree_helper.h"
 #include <vector>
 #include <list>
 #include <map>
@@ -75,40 +74,15 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-        map<TreeNode*, int> d;
-        bool dfs(TreeNode* root, TreeNode* p){
-            if (!root) return false;
-            if (root == p){
-                d[p] = 1;
-                return true;
+        int missingNumber(vector<int>& nums) {
+            int n(SZ(nums)+1);
+            if (n <= 1) return 0;
+            int sum(n*(n-1)/2);
+            REP (i, SZ(nums)){
+                sum -= nums[i];
             }
-            if (dfs(root->left, p) || dfs(root->right, p)){
-                d[root] = 1;
-                return true;
-            }
-            return false;
-        }
-        vector<TreeNode*> v;
-        bool dfsCheck(TreeNode* root, TreeNode* q){
-            if (!root) return false;
-            if (root == q){
-                v.PB(root);
-                return true;
-            }
-            if (dfsCheck(root->left, q) || dfsCheck(root->right, q)){
-                v.PB(root);
-                return true;
-            }
-            return false;
-        }
-        TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-            dfs(root, p);
-            dfsCheck(root, q);
-            for (vector<TreeNode*>::iterator iter = v.begin();iter != v.end();++iter){
-                if (d.find(*iter) != d.end()) return *iter;
-            }
-            return NULL;
+            return sum;
         }
 };
 
-#endif /* end of include guard: LCA_BT_H */
+#endif /* end of include guard: MISSING_NUM_H */

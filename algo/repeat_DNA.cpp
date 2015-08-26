@@ -1,8 +1,7 @@
-#ifndef LCA_BT_H
+#ifndef REPEAT_DNA_H
 
-#define LCA_BT_H
+#define REPEAT_DNA_H
 
-#include "tree_helper.h"
 #include <vector>
 #include <list>
 #include <map>
@@ -75,40 +74,46 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-        map<TreeNode*, int> d;
-        bool dfs(TreeNode* root, TreeNode* p){
-            if (!root) return false;
-            if (root == p){
-                d[p] = 1;
-                return true;
+        int convertDNA2Int(string seq){
+            int x(0);
+            REP (i, SZ(seq)){
+                if (seq[i] == 'A') x = x * 4;
+                if (seq[i] == 'C') x = x * 4 + 1;
+                if (seq[i] == 'G') x = x * 4 + 2;
+                if (seq[i] == 'T') x = x * 4 + 3;
             }
-            if (dfs(root->left, p) || dfs(root->right, p)){
-                d[root] = 1;
-                return true;
-            }
-            return false;
+            return x;
         }
-        vector<TreeNode*> v;
-        bool dfsCheck(TreeNode* root, TreeNode* q){
-            if (!root) return false;
-            if (root == q){
-                v.PB(root);
-                return true;
+        string convertInt2DN(int x){
+            string seq;
+            REP (i, 10){
+                switch (x%4){
+                    case 0: seq = "A" + seq; break;
+                    case 1: seq = "C" + seq; break;
+                    case 2: seq = "G" + seq; break;
+                    case 3: seq = "T" + seq; break;
+                }
+                x /= 4;
             }
-            if (dfsCheck(root->left, q) || dfsCheck(root->right, q)){
-                v.PB(root);
-                return true;
-            }
-            return false;
+            return seq;
         }
-        TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-            dfs(root, p);
-            dfsCheck(root, q);
-            for (vector<TreeNode*>::iterator iter = v.begin();iter != v.end();++iter){
-                if (d.find(*iter) != d.end()) return *iter;
+        vector<string> findRepeatedDnaSequences(string s) {
+            map<int, int> d;
+            REP (i, SZ(s)-9){
+                int t(convertDNA2Int(s.substr(i,10)));
+                if (d.find(t) == d.end()){
+                    d[t] = 0;
+                }
+                d[t]++;
             }
-            return NULL;
+            vector<string> ans;
+            for (map<int, int>::iterator iter = d.begin();iter != d.end();++iter){
+                if (iter->second > 1){
+                    ans.PB(convertInt2DN(iter->first));
+                }
+            }
+            return ans;
         }
 };
 
-#endif /* end of include guard: LCA_BT_H */
+#endif /* end of include guard: REPEAT_DNA_H */
