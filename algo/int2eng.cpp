@@ -74,8 +74,8 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-        string numberToWords(int num) {
-            map<int, string> d;
+        map<int, string> d;
+        Solution(){
             d[0] = "Zero";
             d[1] = "One";
             d[2] = "Two";
@@ -96,10 +96,57 @@ class Solution {
             d[17] = "Seventeen";
             d[18] = "Eighteen";
             d[19] = "Nineteen";
+            d[20] = "Twenty";
+            d[30] = "Thirty";
+            d[40] = "Forty";
+            d[50] = "Fifty";
+            d[60] = "Sixty";
+            d[70] = "Seventy";
+            d[80] = "Eighty";
+            d[90] = "Ninety";
             d[100] = "Hundred";
             d[1000] = "Thousand";
             d[1000000] = "Million";
             d[1000000000] = "Billion";
+        }
+        string numberToWords(int num) {
+            const int BILLION = 1000000000;
+            const int MILLION = 1000000;
+            const int THOUSAND = 1000;
+            if (num == 0) return d[0];
+            string ans;
+            if (num/BILLION % 1000 > 0){
+                ans += parse_thousand(num/BILLION % 1000) + d[BILLION] + " ";
+            }
+            if (num/MILLION % 1000 > 0){
+                ans += parse_thousand(num/MILLION % 1000) + d[MILLION] + " ";
+            }
+            if (num/THOUSAND % 1000 > 0){
+                ans += parse_thousand(num/THOUSAND % 1000) + d[THOUSAND] + " ";
+            }
+            if (num > 0){
+                ans += parse_thousand(num % THOUSAND);
+            }
+            while (ans[SZ(ans)-1] == ' ')
+                ans = ans.substr(0, SZ(ans)-1);
+            return ans;
+        }
+        string parse_thousand(int x){
+            string ans;
+            if (x == 0) return " ";
+            if (x >= 100){
+                ans += d[x/100] + " " + d[100] + " ";
+            }
+            if (x % 100 >= 20){
+                ans += d[x%100/10*10] + " ";
+                if (x % 10 > 0){
+                    ans += d[x%10] + " ";
+                }
+            }
+            else if (x % 100 > 0){
+                ans += d[x%100] + " ";
+            }
+            return ans;
         }
 };
 
