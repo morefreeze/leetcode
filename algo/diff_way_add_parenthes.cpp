@@ -75,16 +75,18 @@ const double PI  = acos(-1.0);
 class Solution {
     public:
         VI ans;
-        list<int> expr;
-        list<char> op;
+        vector<int> expr;
+        vector<char> op;
         void print(){
             cout << "============" << endl;
-            for (list<int>::iterator it=expr.begin();it!=expr.end();++it) cout << *it << " ";
+            for (vector<int>::iterator it=expr.begin();it!=expr.end();++it) cout << *it << " ";
             cout << endl;
-            for (list<char>::iterator it=op.begin();it!=op.end();++it) cout << *it << " ";
+            for (vector<char>::iterator it=op.begin();it!=op.end();++it) cout << *it << " ";
             cout << endl;
             cout << "============" << endl;
         }
+        /*
+         * list is evil!
         void dfs(list<int>::iterator it, list<char>::iterator op_it){
             print();
             if (SZ(expr) == 1){
@@ -127,6 +129,36 @@ class Solution {
                 print();
             }
         }
+        */
+        void dfs(int last_idx){
+            if (SZ(expr) == 1){
+                ans.PB(expr.front());
+                return ;
+            }
+            FOR (i, max(0, last_idx-1), SZ(op)){
+                int cur_expr(expr[i]);
+                int next_expr(expr[i+1]);
+                char cur_op(op[i]);
+                //cout << cur_expr << cur_op << next_expr << endl;
+                switch (cur_op){
+                    case '+':
+                        expr[i] += next_expr;
+                        break;
+                    case '-':
+                        expr[i] -= next_expr;
+                        break;
+                    case '*':
+                        expr[i] *= next_expr;
+                        break;
+                }
+                expr.erase(expr.begin()+i+1);
+                op.erase(op.begin()+i);
+                dfs(i);
+                expr[i] = cur_expr;
+                expr.insert(expr.begin()+i+1, next_expr);
+                op.insert(op.begin()+i, cur_op);
+            }
+        }
         vector<int> diffWaysToCompute(string input) {
             ans.clear();
             expr.clear();
@@ -140,8 +172,7 @@ class Solution {
                 expr.PB(cur_expr);
                 op.PB(cur_op);
             }
-            //dfs(0);
-            dfs(expr.begin(), op.begin());
+            dfs(0);
             return ans;
         }
 };

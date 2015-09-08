@@ -14,6 +14,10 @@ TEST_F(DiffWayAddParenthesTest, One){
     EXPECT_EQ(VI(ASZ(z)), sol.diffWaysToCompute("42"));
 }
 TEST_F(DiffWayAddParenthesTest, Adv){
-    int z[] = {10,-10,-10,-14,-34};
+    int z[] = {10, -14, -10, -10, -34};
     EXPECT_EQ(VI(ASZ(z)), sol.diffWaysToCompute("2*3-4*5"));
+}
+TEST_F(DiffWayAddParenthesTest, Big){
+    int z[] = {37510, -1694, -13310, -13310, -52514};
+    EXPECT_EQ(VI(ASZ(z)), sol.diffWaysToCompute("22*33-44*55"));
 }
