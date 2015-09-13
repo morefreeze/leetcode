@@ -79,19 +79,26 @@ class Solution {
         int product(int a, int b, int k, int *remainder){
             *remainder = 0;
             if (k == 0 || b == 0) return 0;
+            // not overflow, so do the math directly
             if (a <= MAX_INT / k){
                 *remainder = a*k % b;
                 return a*k / b;
             }
             int ans(0);
             *remainder = -b;
-            REP (i, k){
-                *remainder += a;
+            // try ans one by one prevent from overflow
+            int i(0);
+            while (i < k){
+                // make more faster to reach k
+                int diff(min(k-i, abs(b/a)+(b%a>0)));
+                *remainder += diff * a;
                 if (*remainder >= 0){
                     *remainder -= b;
                     ++ans;
                 }
+                i += diff;
             }
+            // make sure remainder positive
             if (*remainder < 0){
                 *remainder += b;
             }
@@ -109,6 +116,7 @@ class Solution {
             else{
                 ans += toString(a / b);
             }
+            // dig store all possible remainder position to find cycle section
             map<int, int> dig;
             string decimal;
             a %= b;
@@ -120,13 +128,9 @@ class Solution {
                     dig[a] = cnt++;
                     int remainder;
                     int quo(product(a, b, 10, &remainder));
-                    if (quo < 0){
-                        decimal += toString(quo).substr(1);
-                    }
-                    else{
-                        decimal += toString(quo);
-                    }
+                    decimal += toString(quo);
                     a = remainder;
+                    // find the cycle section
                     if (EXIST(dig, remainder)){
                         int idx(dig[remainder]);
                         decimal = decimal.substr(0, idx) + '(' + decimal.substr(idx) + ')';
