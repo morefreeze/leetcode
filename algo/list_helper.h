@@ -16,7 +16,7 @@ struct ListNode {
 
 vector<int> list2Vector(ListNode *head);
 ListNode* vector2List(const vector<int>& v);
-void dumpList(const ListNode *head);
+void printList(const ListNode *head);
 
 
 #endif /* end of include guard: LIST_HELPER_H */
