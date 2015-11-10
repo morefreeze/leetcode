@@ -1,6 +1,6 @@
-#ifndef TPL_SOL_H
+#ifndef WORD_BREAK_H
 
-#define TPL_SOL_H
+#define WORD_BREAK_H
 
 #include <unordered_set>
 #include <vector>
@@ -75,7 +75,20 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-
+        bool wordBreak(string s, unordered_set<string>& wordDict) {
+            int n(SZ(s));
+            if (n == 0) return false;
+            bool dp[n+2];
+            CLR(dp);
+            dp[0] = true;
+            FOR (i, 1, n+1) {
+                FOR (j, 0, i+1) {
+                    dp[i] = dp[i-j] && (wordDict.find(s.substr(i-j, j)) != wordDict.end());
+                    if (dp[i]) break;
+                }
+            }
+            return dp[n];
+        }
 };
 
-#endif /* end of include guard: TPL_SOL_H */
+#endif /* end of include guard: WORD_BREAK_H */
