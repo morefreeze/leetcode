@@ -40,7 +40,7 @@ ListNode* vector2List(const vector<int>& v){
 }
 void printList(ListNode *head){
     vector<int> ans(list2Vector(head));
-    for (int i = 0;i < ans.size();++i) {
+    for (int i = 0;i < int(ans.size());++i) {
         cout << ans[i] << " ";
     }
     cout << "!" << endl;

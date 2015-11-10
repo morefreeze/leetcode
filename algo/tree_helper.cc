@@ -104,7 +104,7 @@ vector< vector<int> > dumpTreeLink(TreeLinkNode *root){
 vector< vector<int> > makeTreeLinkAns(const vector<int>& v){
     vector< vector<int> > ans;
     int pow(1);
-    for (int i = 0;i < v.size();++i){
+    for (int i = 0;i < int(v.size());++i){
         if (i == pow-1){
             vector<int> tmp;
             ans.push_back(tmp);
