@@ -12,7 +12,7 @@
 # project, except GTEST_HEADERS, which you can use in your own targets
 # but shouldn't modify.
 
-APP = short_palindrome
+APP = clone_graph
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
 GTEST_DIR = gtest-1.7.0/
@@ -85,5 +85,8 @@ list_helper.o : $(USER_DIR)/list_helper.cc
 tree_helper.o : $(USER_DIR)/tree_helper.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/tree_helper.cc
 
-$(APP)_unittest : $(APP).o $(APP)_unittest.o list_helper.o tree_helper.o gtest_main.a
+graph_helper.o : $(USER_DIR)/graph_helper.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/graph_helper.cc
+
+$(APP)_unittest : $(APP).o $(APP)_unittest.o list_helper.o tree_helper.o graph_helper.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
