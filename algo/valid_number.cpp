@@ -109,10 +109,8 @@ class Solution {
             else {
                 left = s.substr(0, point_flag);
             }
-            debug(point_flag);
             if (point_flag < n-1) {
                 string right(s.substr(point_flag+1));
-                debug(right);
                 // right only contains [0-9]
                 REP (i, SZ(right)) {
                     if (!('0' <= right[i] && right[i] <= '9')) return false;
@@ -143,7 +141,6 @@ class Solution {
         }
         bool isNumber(string s) {
             s = trim(s);
-            debug(s);
             int n(SZ(s));
             int e_flag(n);
             // "" false
@@ -157,12 +154,10 @@ class Solution {
                 }
             }
             string left(s.substr(0, e_flag));
-            debug(left);
             if (e_flag < n) {
                 // 1e false
                 if (e_flag == n-1) return false;
                 string right(s.substr(e_flag+1));
-                debug(right);
                 // 2e0 false
                 if (!isDigit(right)) return false;
             }
