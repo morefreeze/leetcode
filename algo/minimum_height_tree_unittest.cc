@@ -3,7 +3,7 @@
 
 class MinimumHeightTreeTest: public testing::Test{
     protected:
-        Solution sol;
+        Solution2 sol;
 };
 TEST_F(MinimumHeightTreeTest, Small){
     PII a[] = {MP(0,1),};
@@ -38,5 +38,5 @@ TEST_F(MinimumHeightTreeTest, Big2){
     vector<PII> nums(ASZ(a));
     int z[] = {1,5};
     VI ans(ASZ(z));
-    EXPECT_EQ(ans, sol.findMinHeightTrees(399, nums));
+    EXPECT_EQ(ans, sol.findMinHeightTrees(505, nums));
 }

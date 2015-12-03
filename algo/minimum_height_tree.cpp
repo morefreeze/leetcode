@@ -73,6 +73,9 @@ const double PI  = acos(-1.0);
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define debug(x) cerr << #x << " = " << (x) << " (L" << __LINE__ << ")" << " " << __FILE__ << endl;
 
+// d0 cur node longest path
+// d1 cur node second longest path without longest path
+// ret[cur] = max(d0[cur], go up through father longest path)
 class Solution {
     public:
         vector<int> findMinHeightTrees(int n, vector<PII>& edges) {
@@ -96,6 +99,7 @@ class Solution {
             return ans;
         }
         void dfs(int fa, int cur, int fa_up_path, const VI &d0, const VI &d1, const VVI &a, VI &ret) {
+            // go up through father node which longest path
             int up_path;
             if (fa == -1) up_path = 0;
             else if (d0[cur]+1 == d0[fa]) {
@@ -127,6 +131,73 @@ class Solution {
             d0[cur] = l0;
             d1[cur] = l1;
             return l0;
+        }
+};
+
+// find diameter, then find center
+// slower than Solution
+class Solution2 {
+    public:
+        vector<int> findMinHeightTrees(int n, vector<PII>& edges) {
+            VVI a(n);
+            REP (i, SZ(edges)) {
+                a[edges[i].first].PB(edges[i].second);
+                a[edges[i].second].PB(edges[i].first);
+            }
+            VI ret(n);
+            VI fa(n);
+            VI p;
+            int diameter(find_diameter(a, ret, fa, p));
+            VI ans;
+            int cur(p[1]);
+            REP (i, diameter/2) {
+                cur = fa[cur];
+            }
+            ans.PB(cur);
+            if (diameter%2 == 1) {
+                ans.PB(fa[cur]);
+            }
+            return ans;
+        }
+        // find diameter
+        // ret length from one point
+        // fa father of path
+        // p contain two endpoint
+        // return diameter length
+        int find_diameter(const VVI &a, VI &ret, VI &fa, VI &p) {
+            int diameter;
+            // pick random point to start, so we pick 0, use random can't speed up
+            int point(find_longest(0, a, ret, fa, diameter));
+            int point2(find_longest(point, a, ret, fa, diameter));
+            p.PB(point);
+            p.PB(point2);
+            return diameter;
+        }
+        // bfs find longest point
+        int find_longest(int start, const VVI &a, VI &ret, VI &fa, int &diameter) {
+            deque<int> q;
+            q.PB(start);
+            unordered_set<int> v;
+            v.insert(start);
+            ret[start] = 0;
+            while (!q.empty()) {
+                int cur(q.front());
+                REP (i, SZ(a[cur])) {
+                    if (!EXIST(v, a[cur][i])) {
+                        v.insert(a[cur][i]);
+                        q.PB(a[cur][i]);
+                        ret[a[cur][i]] = ret[cur] + 1;
+                        fa[a[cur][i]] = cur;
+                    }
+                }
+                // the last one of queue
+                if (SZ(q) == 1) {
+                    diameter = ret[q.front()];
+                    return q.front();
+                }
+                q.pop_front();
+            }
+            return start;
         }
 };
 
