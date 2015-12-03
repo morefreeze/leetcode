@@ -3,7 +3,7 @@
 
 class MinimumHeightTreeTest: public testing::Test{
     protected:
-        Solution2 sol;
+        CutSolution sol;
 };
 TEST_F(MinimumHeightTreeTest, Small){
     PII a[] = {MP(0,1),};

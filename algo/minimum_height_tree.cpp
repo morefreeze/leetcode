@@ -204,33 +204,37 @@ class Solution2 {
 // cut every leaf, again and again, until left one or two node
 class CutSolution {
     public:
-        static bool eq1(int x) { return x <= 1; }
         vector<int> findMinHeightTrees(int n, vector<PII>& edges) {
-            unordered_set<int> v;
-            REP (i, n) v.insert(i);
-            while (SZ(v) > 2) {
-                VI cnt(n);
-                REP (i, SZ(edges)) {
-                    if (EXIST(v, edges[i].first) && EXIST(v, edges[i].second)) {
-                        cnt[edges[i].first]++;
-                        cnt[edges[i].second]++;
-                    }
-                }
-                REP (i, n) {
-                    if (cnt[i] <= 1) {
-                        v.erase(i);
-                    }
-                }
-            };
-            VI ans;
-            for (unordered_set<int>::iterator it = v.begin(); it != v.end(); ++it) {
-                ans.PB(*it);
+            if (n == 1) {
+                VI ans;
+                ans.PB(0);
+                return ans;
             }
-            SORT(ans);
-            return ans;
+            vector<unordered_set<int> > a(n);
+            REP (i, SZ(edges)) {
+                a[edges[i].first].insert(edges[i].second);
+                a[edges[i].second].insert(edges[i].first);
+            }
+            VI ans1, ans2;
+            VI *p1(&ans1), *p2(&ans2);
+            REP (i, SZ(a)) {
+                if (SZ(a[i]) == 1) p1->PB(i);
+            }
+            while (1) {
+                for (auto i: *p1) {
+                    for (auto cur : a[i]) {
+                        a[ cur ].erase(i);
+                        if (SZ(a[ cur ]) == 1) p2->PB(cur);
+                    }
+                }
+                if (p2->empty()) return *p1;
+                p1->clear();
+                swap(p1, p2);
+            }
         }
 };
 
+// TLE
 class BruteForceSolution {
     public:
         vector<int> findMinHeightTrees(int n, vector<PII>& edges) {
