@@ -36,10 +36,18 @@ void preOrder(TreeNode *root){
     preOrder(root->left);
     preOrder(root->right);
 }
+void postOrder(TreeNode *root){
+    if (root == NULL) return;
+    preOrder(root->left);
+    preOrder(root->right);
+    cout << root->val << " ";
+}
 void printTree(TreeNode *root){
+    preOrder(root);
+    cout << endl;
     midOrder(root);
     cout << endl;
-    preOrder(root);
+    postOrder(root);
     cout << endl;
 }
 

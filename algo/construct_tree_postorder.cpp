@@ -1,6 +1,6 @@
-#ifndef CONSTRUCT_TREE_H
+#ifndef CONSTRUCT_TREE_POSTORDER_H
 
-#define CONSTRUCT_TREE_H
+#define CONSTRUCT_TREE_POSTORDER_H
 
 #include "tree_helper.h"
 #include <unordered_set>
@@ -76,32 +76,29 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-        // ps: pre start
-        // pe: pre end
         // is: inorder start
         // ie: inorder end
-        TreeNode* buildTreeInplace(vector<int>& preorder, int ps, int pe,
-                vector<int>& inorder, int is, int ie) {
+        // ps: post start
+        // pe: post end
+        TreeNode* buildTreeInplace(VI &inorder, int is, int ie,
+                VI &postorder, int ps, int pe) {
             if (pe - ps != ie - is) return NULL;
             if (pe - ps <= 0) return NULL;
-            if (pe - ps == 1 && preorder[ps] != inorder[is]) {
+            if (pe - ps == 1 && inorder[is] != postorder[ps]) {
                 cerr << "invalid tree" << endl;
                 return NULL;
             }
-            int root(preorder[ps]);
+            int root(postorder[pe-1]);
             TreeNode *node = new TreeNode(root);
             int left;
             for (left = 0;is+left < ie && inorder[is+left] != root; ++left);
-            node->left = buildTreeInplace(preorder, ps+1, ps+left+1,
-                    inorder, is, is+left);
-            node->right = buildTreeInplace(preorder, ps+left+1, pe,
-                    inorder, is+left+1, ie);
+            node->left = buildTreeInplace(inorder, is, is+left, postorder, ps, ps+left);
+            node->right = buildTreeInplace(inorder, is+left+1, ie, postorder, ps+left, pe-1);
             return node;
         }
-
-        TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-            return buildTreeInplace(preorder, 0, SZ(preorder), inorder, 0, SZ(inorder));
+        TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+            return buildTreeInplace(inorder, 0, SZ(inorder), postorder, 0, SZ(postorder));
         }
 };
 
-#endif /* end of include guard: CONSTRUCT_TREE_H */
+#endif /* end of include guard: CONSTRUCT_TREE_POSTORDER_H */
