@@ -75,7 +75,46 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
-
+        int maximalRectangle(vector<vector<char> >& matrix) {
+            int n(SZ(matrix));
+            if (n == 0) return 0;
+            int m(SZ(matrix[0]));
+            if (m == 0) return 0;
+            int h[m+2];
+            int l[m+2];
+            int r[m+2];
+            int ans(0);
+            CLR(h);
+            REP (i, n) {
+                FOR (j, 0, m) {
+                    if (matrix[i][j] - '0') {
+                        h[j+1]++;
+                    }
+                    else {
+                        h[j+1] = 0;
+                    }
+                }
+                h[0] = h[m+1] = -1;
+                FOR (j, 1, m+1) {
+                    int k = j;
+                    while (h[j] <= h[k-1]) {
+                        k = l[k-1];
+                    }
+                    l[j] = k;
+                }
+                for (int j = m;j > 0; --j) {
+                    int k = j;
+                    while (h[j] <= h[k+1]) {
+                        k = r[k+1];
+                    }
+                    r[j] = k;
+                }
+                FOR (j, 1, m+1) {
+                    ans = max(ans, (r[j]-l[j]+1) * h[j]);
+                }
+            }
+            return ans;
+        }
 };
 
 #endif /* end of include guard: MAXIMAL_RECTANGLE_H */
