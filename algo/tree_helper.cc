@@ -8,8 +8,7 @@ TreeNode* vector2Tree(vector<int> a){
     for (int i = 0;i < n;++i){
         if (a[i] == NULL_NODE) continue;
         if (i == 0){
-            root = new TreeNode(a[i]);
-            tree[0] = root;
+            tree[0] = new TreeNode(a[i]);
         }
         root = tree[i];
         if (i * 2 + 1 < n && a[i*2+1] != NULL_NODE){
