@@ -24,23 +24,26 @@ TreeNode* vector2Tree(vector<int> a){
     return tree[0];
 }
 
-void midOrder(TreeNode *root){
-    if (root == NULL) return;
+int midOrder(TreeNode *root){
+    if (root == NULL) return NULL_NODE;
     midOrder(root->left);
     cout << root->val << " ";
     midOrder(root->right);
+    return root->val;
 }
-void preOrder(TreeNode *root){
-    if (root == NULL) return;
+int preOrder(TreeNode *root){
+    if (root == NULL) return NULL_NODE;
     cout << root->val << " ";
     preOrder(root->left);
     preOrder(root->right);
+    return root->val;
 }
-void postOrder(TreeNode *root){
-    if (root == NULL) return;
+int postOrder(TreeNode *root){
+    if (root == NULL) return NULL_NODE;
     preOrder(root->left);
     preOrder(root->right);
     cout << root->val << " ";
+    return root->val;
 }
 void printTree(TreeNode *root){
     preOrder(root);
@@ -49,6 +52,12 @@ void printTree(TreeNode *root){
     cout << endl;
     postOrder(root);
     cout << endl;
+}
+bool checkBST(TreeNode *root) {
+    if (root == NULL) return true;
+    if (root->left != NULL && !(root->left->val < root->val)) return false;
+    if (root->right != NULL && !(root->right->val > root->val)) return false;
+    return checkBST(root->left) && checkBST(root->right);
 }
 
 TreeLinkNode* vector2TreeLink(const vector<int>& v){

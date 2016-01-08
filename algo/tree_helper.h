@@ -24,10 +24,11 @@ struct TreeLinkNode {
 
 const int NULL_NODE = 0x80000000;
 TreeNode* vector2Tree(vector<int> a);
-void mid_order(TreeNode *root);
-void pre_order(TreeNode *root);
-void post_order(TreeNode *root);
+int midOrder(TreeNode *root);
+int preOrder(TreeNode *root);
+int postOrder(TreeNode *root);
 void printTree(TreeNode *root);
+bool checkBST(TreeNode *root);
 
 TreeLinkNode* vector2TreeLink(const vector<int>& v);
 void printTreeLink(TreeLinkNode *root);
