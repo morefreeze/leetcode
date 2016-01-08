@@ -23,6 +23,38 @@ TreeNode* vector2Tree(vector<int> a){
     return tree[0];
 }
 
+// convert vector<int> to tree by leetcode style
+// vector don't need complete binary tree
+TreeNode* vector2TreeLT(vector<int> a) {
+    int n(a.size());
+    vector<TreeNode*> tree;
+    for (int i = 0;i < n;++i) {
+        if (a[i] == NULL_NODE) continue;
+        tree.push_back(new TreeNode(a[i]));
+    }
+    if (tree.size() == 0) return NULL;
+    int fa(0);
+    int ch(1);
+    int i(1);
+    while (i < n) {
+        if (a[i] != NULL_NODE) {
+            tree[fa]->left = tree[ch];
+            ++ch;
+        }
+        ++i;
+        if (i >= n) {
+            break;
+        }
+        if (a[i] != NULL_NODE) {
+            tree[fa]->right = tree[ch];
+            ++ch;
+        }
+        ++i;
+        ++fa;
+    }
+    return tree[0];
+}
+
 int midOrder(TreeNode *root){
     if (root == NULL) return NULL_NODE;
     midOrder(root->left);

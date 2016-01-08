@@ -24,6 +24,7 @@ struct TreeLinkNode {
 
 const int NULL_NODE = 0x80000000;
 TreeNode* vector2Tree(vector<int> a);
+TreeNode* vector2TreeLT(vector<int> a);
 int midOrder(TreeNode *root);
 int preOrder(TreeNode *root);
 int postOrder(TreeNode *root);

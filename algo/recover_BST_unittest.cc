@@ -26,3 +26,20 @@ TEST_F(RecoverBSTTest, Small2){
     midOrder(root);
     EXPECT_TRUE(checkBST(root));
 }
+TEST_F(RecoverBSTTest, SmallLT){
+    //              2
+    //            /    \
+    //           (6)    4
+    //                 /  \
+    //                3    (1)
+    //                     /
+    //                    5
+    // just test vector2TreeLT
+    int a[] = {2,6,4,NULL_NODE,NULL_NODE,3,1,NULL_NODE,NULL_NODE,5};
+    TreeNode *root(vector2TreeLT(VI(ASZ(a))));
+    midOrder(root);
+    cout << endl;
+    sol.recoverTree(root);
+    midOrder(root);
+    EXPECT_TRUE(checkBST(root));
+}
