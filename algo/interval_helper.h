@@ -14,6 +14,7 @@ struct Interval {
     int end;
     Interval() : start(0), end(0) {}
     Interval(int s, int e) : start(s), end(e) {}
+    friend ostream& operator<<(ostream &out, const Interval &ivl);
 };
 
 bool interval_array_eq(const vector<Interval> lhs, const vector<Interval> rhs);
