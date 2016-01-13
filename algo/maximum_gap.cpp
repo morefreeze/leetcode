@@ -1,5 +1,34 @@
 class Solution {
 public:
+	// bucket sort, but no need sort, just keep min max of every interval
+	int maximumGap(vector<int>& nums) {
+		int n = nums.size();
+		if (n <= 1) return 0;
+		auto lh = minmax_element(nums.begin(), nums.end());
+		int l = *lh.first, h = *lh.second;
+		int gap = max(1, (h-l) / (n-1));
+		int m = (h-l) / gap + 1;
+		vector<int> bucket_min(m, INT_MAX);
+		vector<int> bucket_max(m, INT_MIN);
+		for (auto num : nums) {
+			int k = (num-l) / gap;
+			bucket_min[k] = min(bucket_min[k], num);
+			bucket_max[k] = max(bucket_max[k], num);
+		}
+		int ans(bucket_max[0] - bucket_min[0]);
+		int i = 0;
+		while (i < m) {
+			int j = i+1;
+			while (j < m && bucket_min[j] == INT_MAX && bucket_max[j] == INT_MIN) ++j;
+			if (j == m) break;
+			ans = max(ans, bucket_min[j] - bucket_max[i]);
+			i = j;
+		}
+		return ans;
+	}
+};
+class RadixSolution {
+public:
 	int maximumGap(vector<int>& nums) {
 		int n(int(nums.size()));
 		int pow(1);
