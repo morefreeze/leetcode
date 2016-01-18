@@ -6,5 +6,7 @@ class CountRangeSumTest: public testing::Test{
         Solution sol;
 };
 TEST_F(CountRangeSumTest, Small){
-    EXPECT_EQ(123, sol.func("123"));
+    int a[] = {-2, 5, -1};
+    VI nums(ASZ(a));
+    EXPECT_EQ(3, sol.countRangeSum(nums, -2, 2));
 }
