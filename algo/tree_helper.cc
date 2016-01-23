@@ -1,6 +1,6 @@
 #include "tree_helper.h"
 
-TreeNode* vector2Tree(vector<int> a){
+TreeNode* vector2Tree(vector<int> &a){
     TreeNode *root(NULL);
     int n(a.size());
     if (n == 0) return root;
@@ -25,7 +25,7 @@ TreeNode* vector2Tree(vector<int> a){
 
 // convert vector<int> to tree by leetcode style
 // vector don't need complete binary tree
-TreeNode* vector2TreeLT(vector<int> a) {
+TreeNode* vector2TreeLT(vector<int> &a) {
     int n(a.size());
     vector<TreeNode*> tree;
     for (int i = 0;i < n;++i) {
@@ -115,21 +115,23 @@ TreeLinkNode* vector2TreeLink(const vector<int>& v){
     return tree[0];
 }
 
+// printTreeLink invoke after generating next
 void printTreeLink(TreeLinkNode *root){
     if (root == NULL){
         cout << "(empty tree)" << endl;
         return;
     }
     int depth(0);
-    while (root){
+    vector<TreeLinkNode*> mostLeft;
+    findAllLeft(root, mostLeft);
+    for (int i = 0;i < int(mostLeft.size()); ++i) {
         cout << "depth " << depth << endl;
-        TreeLinkNode *cur(root);
+        TreeLinkNode *cur(mostLeft[i]);
         while (cur){
             cout << cur->val << " ";
             cur = cur->next;
         }
         cout << endl;
-        root = root->left;
         ++depth;
     }
 }
@@ -158,8 +160,63 @@ vector< vector<int> > makeTreeLinkAns(const vector<int>& v){
             ans.push_back(tmp);
             pow <<= 1;
         }
-        ans[int(ans.size())-1].push_back(v[i]);
+        if (v[i] != NULL_NODE) {
+            ans[int(ans.size())-1].push_back(v[i]);
+        }
     }
+    return ans;
+}
+
+// convert vector<int> to tree by leetcode style
+// vector don't need complete binary tree
+TreeLinkNode* vector2TreeLinkLT(vector<int> &a) {
+    int n(a.size());
+    vector<TreeLinkNode*> tree;
+    for (int i = 0;i < n;++i) {
+        if (a[i] == NULL_NODE) continue;
+        tree.push_back(new TreeLinkNode(a[i]));
+    }
+    if (tree.size() == 0) return NULL;
+    int fa(0);
+    int ch(1);
+    int i(1);
+    while (i < n) {
+        if (a[i] != NULL_NODE) {
+            tree[fa]->left = tree[ch];
+            ++ch;
+        }
+        ++i;
+        if (i >= n) {
+            break;
+        }
+        if (a[i] != NULL_NODE) {
+            tree[fa]->right = tree[ch];
+            ++ch;
+        }
+        ++i;
+        ++fa;
+    }
+    return tree[0];
+}
+
+void findAllLeft(TreeLinkNode *root, vector<TreeLinkNode*> &ans) {
+    if (root == NULL) return ;
+    ans.push_back(root);
+    for (int depth = 0;;depth++) {
+        TreeLinkNode *cur = findLeft(root->left, depth);
+        if (cur == NULL) {
+            cur = findLeft(root->right, depth);
+        }
+        if (cur == NULL) break;
+        ans.push_back(cur);
+    }
+}
+
+TreeLinkNode* findLeft(TreeLinkNode *root, int depth) {
+    if (root == NULL) return NULL;
+    if (depth == 0) return root;
+    TreeLinkNode *ans = findLeft(root->left, depth-1);
+    if (ans == NULL) ans = findLeft(root->right, depth-1);
     return ans;
 }
 

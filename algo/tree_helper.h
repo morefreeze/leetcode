@@ -23,8 +23,8 @@ struct TreeLinkNode {
 };
 
 const int NULL_NODE = 0x80000000;
-TreeNode* vector2Tree(vector<int> a);
-TreeNode* vector2TreeLT(vector<int> a);
+TreeNode* vector2Tree(vector<int> &a);
+TreeNode* vector2TreeLT(vector<int> &a);
 int midOrder(TreeNode *root);
 int preOrder(TreeNode *root);
 int postOrder(TreeNode *root);
@@ -33,7 +33,10 @@ bool checkBST(TreeNode *root);
 
 TreeLinkNode* vector2TreeLink(const vector<int>& v);
 void printTreeLink(TreeLinkNode *root);
+TreeLinkNode* vector2TreeLinkLT(vector<int> &a);
 vector< vector<int> > dumpTreeLink(TreeLinkNode *root);
 vector< vector<int> > makeTreeLinkAns(const vector<int>& v);
+void findAllLeft(TreeLinkNode *root, vector<TreeLinkNode*> &ans);
+TreeLinkNode* findLeft(TreeLinkNode *root, int depth);
 
 #endif /* end of include guard: TREE_HELPER_H */
