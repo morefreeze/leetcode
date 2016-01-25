@@ -75,10 +75,60 @@ const double PI  = acos(-1.0);
 
 class Solution {
     public:
+        // O(n)
+        int findDuplicate(vector<int>& nums) {
+            int slow(0), fast(0), found(0);
+            while (1) {
+                slow = nums[slow];
+                fast = nums[nums[fast]];
+                if (slow == fast) {
+                    // if found == slow, then find the extry of cycle, it can be proved
+                    while (found != slow) {
+                        found = nums[found];
+                        slow = nums[slow];
+                    }
+                    return found;
+                }
+            }
+        }
+};
+
+class Solution2 {
+    public:
+        // O(n), because range is integer
+        int findDuplicate(vector<int>& nums) {
+            int bits[32];
+            int pow[30];
+            pow[0] = 1;
+            FOR (i, 1, 30) pow[i] = pow[i-1] * 2;
+            CLR(bits);
+            int N(SZ(nums));
+            REP (i, N) {
+                for (int idx = 0; pow[idx] <= nums[i]; ++idx) {
+                    bits[idx] += int((nums[i] & pow[idx]) > 0);
+                }
+            }
+            int ans(0);
+            for (int idx = 0; pow[idx] <= SZ(nums) && idx < 29; ++idx) {
+                int c0(count0(N-1, pow[idx+1]));
+                int c1(N - 1 - c0);
+                if (bits[idx] > c1) {
+                    ans |= pow[idx];
+                }
+            }
+            return ans;
+        }
+        int count0(int x, int pow) {
+            int hpow(pow/2);
+            return (x+1) / pow * hpow + min(hpow, (x+1) % pow) - 1;
+        }
+};
+
+class Solution3 {
+    public:
         // O(nlog(n))
         int findDuplicate(vector<int>& nums) {
             int N(SZ(nums));
-            srand(time(0));
             int ans(0);
             int low(1), upp(N);
             while (low < upp) {
