@@ -79,29 +79,13 @@ class Solution {
             int n(SZ(nums));
             SORT(nums);
             if (n <= 2) return ;
-            FOR (k, 1, n) {
-                if ((k % 2 && nums[k] <= nums[k-1]) || (k % 2 == 0 && nums[k] >= nums[k-1])) {
-                    int i(k);
-                    int tmp(nums[i]);
-                    int st(i);
-                    while(1) {
-                        int next_i = next(i, n);
-                        //debug(i); debug(next_i); debug(nums[next_i]);
-                        swap(nums[next_i], tmp);
-                        if (next_i == st) break;
-                        i = next_i;
-                    };
-                }
-            }
-            FOR (k, 1, n) {
-                if ((k % 2 && nums[k] <= nums[k-1]) || (k % 2 == 0 && nums[k] >= nums[k-1])) {
-                    nums.clear();
-                    return ;
-                }
+            VI tmp(ALL(nums));
+            REP (k, n) {
+                nums[k] = tmp[next(k, n)];
             }
         }
         int next(int x, int n) {
-            return x < (n+1)/2 ? x * 2 : (x-(n+1)/2) * 2 + 1;
+            return x % 2 ? (n - 1 - x/2) : (n-1)/2 - x/2;
         }
 };
 
