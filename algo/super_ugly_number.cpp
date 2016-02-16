@@ -79,17 +79,38 @@ struct Node {
     int last;
     Node(int n, int l): num(n), last(l) {}
 };
-bool operator<(const Node &lhs, const Node &rhs){
-    if (lhs.num != rhs.num) return lhs.num > rhs.num;
-    return lhs.last > rhs.last;
-}
+struct cmp {
+    bool operator()(const Node &lhs, const Node &rhs){
+        if (lhs.num != rhs.num) return lhs.num > rhs.num;
+        return lhs.last > rhs.last;
+    }
+};
 class Solution {
     public:
         int nthSuperUglyNumber(int n, vector<int>& primes) {
             int k(SZ(primes));
-            VI candicate(ALL(primes));
-            priority_queue<Node, vector<Node> > q;
+            vector< deque<int> > candicate(k);
+            REP (i, k) candicate[i].PB(1);
+            priority_queue<Node, vector<Node>, cmp > q;
             q.push(Node(1, 0));
+            REP (i, n-1) {
+                if (q.empty()) return -1;
+                Node x = q.top();
+                q.pop();
+                FOR (j, x.last, k) {
+                    if (INT_MAX / primes[j] >= x.num) {
+                        candicate[j].PB(x.num * primes[j]);
+                    }
+                    if (!candicate[j].empty() && x.num == candicate[j].front()) {
+                        candicate[j].pop_front();
+                        if (!candicate[j].empty()) {
+                            q.push(Node(candicate[j].front(), j));
+                        }
+                    }
+                    if (INT_MAX / primes[j] < x.num) break;
+                }
+            }
+            return q.top().num;
         }
 };
 
