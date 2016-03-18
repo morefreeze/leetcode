@@ -1,6 +1,6 @@
-#ifndef REMOVE_DUP_LETTERS_H
+#ifndef LONGEST_INCREASING_PATH_H
 
-#define REMOVE_DUP_LETTERS_H
+#define LONGEST_INCREASING_PATH_H
 
 #include <unordered_set>
 #include <vector>
@@ -73,13 +73,51 @@ const double PI  = acos(-1.0);
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define debug(x) cerr << #x << " = " << (x) << " (L" << __LINE__ << ")" << " " << __FILE__ << endl;
 
+struct node {
+    int x,y, num;
+    node(int x, int y, int num): x(x), y(y), num(num) {}
+    bool operator<(const node& rhs) const {
+        if (num != rhs.num) return num < rhs.num;
+        return x < rhs.x || (x == rhs.x && y < rhs.y);
+    }
+};
 class Solution {
     public:
-        string removeDuplicateLetters(string s) {
-        }
-        static bool cmp(PII &lhs, PII &rhs) {
-            return lhs.second < rhs.second;
+        int longestIncreasingPath(VVI& matrix) {
+            int n(SZ(matrix));
+            if (n == 0) return 0;
+            int m(SZ(matrix[0]));
+            vector<node> st;
+            REP (i, n) {
+                REP (j, m) {
+                    st.PB(node(i,j, matrix[i][j]));
+                }
+            }
+            SORT(st);
+            vector< vector<bool> > vi(n);
+            vector< vector<int> > f(n);
+            REP (i, n) {
+                vi[i] = vector<bool>(m, false);
+                f[i] = vector<int>(m, 0);
+            }
+            int ans(1);
+            const int dx[4] = {-1, 0, 0, 1};
+            const int dy[4] = {0, -1, 1, 0};
+            REP (i, SZ(st)) {
+                int &cur = f[st[i].x][st[i].y];
+                cur = 1;
+                REP (k, 4) {
+                    int x = st[i].x + dx[k];
+                    int y = st[i].y + dy[k];
+                    if (!(0 <= x && x < n && 0 <= y && y < m)) continue;
+                    if (matrix[x][y] < st[i].num && f[x][y] >= cur) {
+                        cur = f[x][y] + 1;
+                        ans = max(ans, cur);
+                    }
+                }
+            }
+            return ans;
         }
 };
 
-#endif /* end of include guard: REMOVE_DUP_LETTERS_H */
+#endif /* end of include guard: LONGEST_INCREASING_PATH_H */
